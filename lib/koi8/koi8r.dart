@@ -1,17 +1,9 @@
 import 'dart:convert' as cnvrt;
 
 import 'package:enough_convert/koi8/koi8.dart';
-import 'package:enough_convert/windows/windows1251.dart';
 
-const String _koi8rSymbols = '─│┌┐└┘├┤┬┴┼▀▄█▌▐' +
-    '░▒▓⌠■∙√≈≤≥ ⌡°²·÷' +
-    '═║╒ё╓╔╕╖╗╘╙╚╛╜╝╞' +
-    '╟╠╡Ё╢╣╤╥╦╧╨╩╪╫╬©' +
-    'юабцдефгхийклмно' +
-    'пярстужвьызшэщчъ' +
-    'ЮАБЦДЕФГХИЙКЛМНО' +
-    'ПЯРСТУЖВЬЫЗШЭЩЧЪ';
-
+const String _koi8rSymbols =
+    '─│┌┐└┘├┤┬┴┼▀▄█▌▐░▒▓⌠■∙√≈≤≥\u{00A0}⌡°²·÷═║╒ё╓╔╕╖╗╘╙╚╛╜╝╞╟╠╡Ё╢╣╤╥╦╧╨╩╪╫╬©юабцдефгхийклмнопярстужвьызшэщчъЮАБЦДЕФГХИЙКЛМНОПЯРСТУЖВЬЫЗШЭЩЧЪ';
 const Map<int, int> _koi8rMap = {
   0x2500: 128,
   0x2502: 129,
@@ -162,14 +154,14 @@ class KOI8RCodec extends cnvrt.Encoding {
   });
 
   @override
-  Windows1251Decoder get decoder => allowInvalid
-      ? const Windows1251Decoder(allowInvalid: true)
-      : const Windows1251Decoder(allowInvalid: false);
+  KOI8RDecoder get decoder => allowInvalid
+      ? const KOI8RDecoder(allowInvalid: true)
+      : const KOI8RDecoder(allowInvalid: false);
 
   @override
-  Windows1251Encoder get encoder => allowInvalid
-      ? const Windows1251Encoder(allowInvalid: true)
-      : const Windows1251Encoder(allowInvalid: false);
+  KOI8REncoder get encoder => allowInvalid
+      ? const KOI8REncoder(allowInvalid: true)
+      : const KOI8REncoder(allowInvalid: false);
 
   @override
   String get name => 'koi8-r';

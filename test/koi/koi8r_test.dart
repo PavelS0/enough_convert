@@ -1,6 +1,6 @@
 import 'dart:convert' as convert;
 
-import 'package:enough_convert/koi8/koi8-r.dart';
+import 'package:enough_convert/koi8/koi8r.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -21,20 +21,26 @@ void main() {
     });
 
     test('Decode koi8-r', () {
-      expect(KOI8RDecoder().convert([0xC4, 0xD6, 0xFC]), 'ДЦь');
-      final bytes = KOI8REncoder().convert('Радий познайомитися з Вами!');
-      expect(KOI8RDecoder().convert(bytes), 'Радий познайомитися з Вами!');
+      expect(KOI8RDecoder().convert([0xF0, 0xD2, 0xC9, 0xD7, 0xC5, 0xF4]),
+          'ПривеТ');
+      final bytes =
+          KOI8REncoder().convert('Рад приветствовать Вас в нашем тесте!');
+      expect(KOI8RDecoder().convert(bytes),
+          'Рад приветствовать Вас в нашем тесте!');
     });
 
     test('Decode koi8-r with invalid value when invalid input is allowed', () {
       expect(
-          KOI8RDecoder(allowInvalid: true).convert([0xC4, 0xD6, 0xFC, 0xFF1]),
-          'ДЦь�');
+          KOI8RDecoder(allowInvalid: true)
+              .convert([0xF0, 0xD2, 0xC9, 0xD7, 0xC5, 0xF4, 0xFF1]),
+          'ПривеТ�');
     });
 
     test('Decode koi8-r with invalid value when invalid input is not allowed',
         () {
-      expect(() => KOI8RDecoder().convert([0xC4, 0xD6, 0xFC, 0xFF1]),
+      expect(
+          () => KOI8RDecoder()
+              .convert([0xF0, 0xD2, 0xC9, 0xD7, 0xC5, 0xF4, 0xFF1]),
           throwsA(isA<FormatException>()));
     });
   });
@@ -46,22 +52,27 @@ void main() {
     });
 
     test('encode koi8-r', () {
-      final bytes = KOI8REncoder().convert('Радий познайомитися з Вами!');
+      final bytes =
+          KOI8REncoder().convert('Рад приветствовать Вас в нашем тесте!');
       expect(bytes.any((element) => element > 0xFF), false);
-      expect(KOI8RDecoder().convert(bytes), 'Радий познайомитися з Вами!');
+      expect(KOI8RDecoder().convert(bytes),
+          'Рад приветствовать Вас в нашем тесте!');
     });
 
     test('encode more koi8-r ', () {
       final encoder = KOI8REncoder();
       final decoder = KOI8RDecoder();
+      final v = decoder.symbols.substring(26, 27);
+      print(v);
       var bytes = encoder.convert(decoder.symbols);
       var expected = List.generate(0xFF - 0x7F, (index) => index + 0x80);
-      for (var i = 0; i < decoder.symbols.length; i++) {
+      /*  for (var i = 0; i < decoder.symbols.length; i++) {
         if (decoder.symbols.codeUnitAt(i) == 0x3F) {
           // ?
           expected[i] = 0x3F;
         }
-      }
+      } */
+      //bytes[26]
       expect(bytes, expected);
     });
 
