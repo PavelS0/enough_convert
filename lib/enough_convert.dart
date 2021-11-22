@@ -24,4 +24,6 @@ export 'windows/windows1252.dart';
 export 'windows/windows1253.dart';
 export 'windows/windows1254.dart';
 export 'windows/windows1256.dart';
+export 'koi8/koi8.dart';
+export 'koi8/koi8r.dart';
 export 'gbk/gbk.dart';
